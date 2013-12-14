@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="description" content="">
+		<meta name="author" content="">
+		<title>Funnel</title>
+		<link href='http://fonts.googleapis.com/css?family=Droid+Sans' rel='stylesheet' type='text/css'>
+		<link href="css/bootstrap.css" rel="stylesheet">
+		<link href="css/app.css" rel="stylesheet">
+
+	</head>
+
+	<body>
+
+		<!-- Fixed navbar -->
+		<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+			<div class="container">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="#">XamAnalytics</a>
+				</div>
+				<div class="navbar-collapse collapse">
+
+					<ul class="nav navbar-nav navbar-right">
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">Items <b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li><a href="#">Item Similarity</a></li>
+								<li><a href="#">Item Recommendation</a></li>
+							</ul>
+						</li>
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">Users <b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li><a href="#">User Similarity</a></li>
+								<li><a href="#">User Recommendation</a></li>
+							</ul>
+						</li>
+						<li><a href='#'>Email</a></li>
+						<li class="active"><a href="#">Dashboard</a></li>
+					</ul>
+				</div><!--/.nav-collapse -->
+			</div>
+			<div class="container">
+				<div class="navbar-selector">
+					<div class="btn-group">
+						<button class="btn btn-default active">Week</button>
+						<button class="btn btn-default">Day</button>
+						<button class="btn btn-default">Month</button>
+						<button class="btn btn-default">Season</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="container">
+			<div class="row round-container">
+
+				<div class="col-md-3"><div id="funnel-container"></div></div>
+				<div class="col-md-9">
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th class="center"></th>
+								<th class="center">Visits <span class="small">(vs. last week)</span> </th>
+								<th class="center">Baskets <span class="small">(vs. last week)</span> </th>
+								<th class="center">Conversions <span class="glyphicon glyphicon-gbp"></span> <span class="small">(vs. last week)</span></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><span class="td-label td-label-orange">Men's Wear</span></td>
+								<td class="center">
+									<span class="num">15.9%</span> <b class="caret up-caret"></b><br />
+									<span class="small">Visited Website</span>
+								</td>
+								<td class="center">
+									<span class="num">5.40%</span> <b class="caret down-caret"></b><br />
+									<span class="small">Baskets Created</span>
+								</td>
+								<td class="center">
+									<span class="num">6.78%</span> <b class="caret up-caret"></b><br />
+									<span class="small">Orders Completed</span>
+								</td>
+							</tr>
+							<tr>
+								<td><span class="td-label td-label-green">Ladie's Wear</span></td>
+								<td class="center">
+
+									<span class="num">9.20%</span> <b class="caret down-caret"></b><br />
+									<span class="small">Visited Website</span>
+								</td>
+								<td class="center">
+									<span class="num">9.55%</span> <b class="caret down-caret"></b><br />
+									<span class="small">Baskets Created</span>
+								</td>
+								<td class="center">
+									<span class="num">9.80%</span> <b class="caret down-caret"></b><br />
+									<span class="small">Orders Completed</span>
+								</td>
+							</tr>
+							<tr>
+								<td><span class="td-label td-label-blue">Winter Collection</span></td>
+								<td class="center">
+									<span class="num">50.00%</span> <b class="caret up-caret"></b><br />
+									<span class="small">Visited Website</span>
+								</td>
+								<td class="center">
+									<span class="num">7.90%</span> <b class="caret up-caret"></b><br />
+									<span class="small">Baskets Created</span>
+								</td>
+								<td class="center">
+									<span class="num">12.80%</span> <b class="caret up-caret"></b><br />
+									<span class="small">Orders Completed</span>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+
+		<script src="js/d3.v3.min.js" charset="utf-8"></script>
+		<script src="../src/chart/funnel.js"></script>
+
+		<script type="text/javascript">
+			var options = {
+				width: 200,
+				height: 250,
+				bottomPct: 0.5,
+				series: [{
+						name: 'Unique Users',
+						data: [
+							['Website Visits',   8654],
+							['Baskets', 1987],
+							['Orders',    846],
+							['Payments',    800]
+						]
+					}
+				]};
+			var funnel = new xam.chart.funnelChart(options);
+			funnel.draw('#funnel-container');
+			
+			
+		</script>
+		<script src="js/jquery-1.10.2.min.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+	</body>
+</html>
