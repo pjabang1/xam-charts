@@ -1,1 +1,10 @@
-first commit
+Issues with d3.js
+.map method throws errors on some i.e versions <8 
+- added iesupport.js with implemented .map method
+
+SVG not supported in older (ie) browsers. Use rapahel.js - has vml support
+
+Install a windows xp with ie 6 vm : https://community.jboss.org/thread/223278?_sscc=t
+http://www.modern.ie/en-us/virtualization-tools#downloads
+
+
