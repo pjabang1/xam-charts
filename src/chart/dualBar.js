@@ -7,6 +7,7 @@
 	
 	xam.chart.dualChart = function(options, width, height, bottomPct) {
 		
-		
 	}
+	
+	
 })();

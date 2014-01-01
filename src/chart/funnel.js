@@ -21,17 +21,17 @@
 		this.bottomPct = typeof options.bottomPct !== 'undefined' ? options.bottomPct : DEFAULT_BOTTOM_PERCENT;
 		this.slope = 2*this.height/(this.width - this.bottomPct*this.width);
 		this.totalArea = (this.width+this.bottomPct*this.width)*this.height/2;
-	}
+	};
 	
 	xam.chart.funnelChart.prototype.getLabel = function(ind){
 		/* Get label of a category at index 'ind' in this.data */
 		return this.data[ind][0]
-	}
+	};
 
 	xam.chart.funnelChart.prototype.getEngagementCount = function(ind){
 		/* Get engagement value of a category at index 'ind' in this.data */
-		return this.data[ind][1]
-	}
+		return this.data[ind][1];
+	};
 
 	xam.chart.funnelChart.prototype.createPaths = function(){
 		/* Returns an array of points that can be passed into d3.svg.line to create a path for the funnel */
@@ -57,12 +57,12 @@
 			trapezoids.push(points);
 
 			findNextPoints(chart, nextLeftX, nextRightX, nextHeight, dataInd+1);
-		}
+		};
 
 		findNextPoints(this, 0, this.width, 0, 0);
 		// console.log(trapezoids)
 		return trapezoids;
-	}
+	};
 
 	xam.chart.funnelChart.prototype.draw = function(elem){
 		var funnelSvg = d3.select(elem).append('svg')
@@ -80,18 +80,18 @@
 		});
 
 		// Automatically generates colors for each trapezoid in funnel
-		var colorScale = d3.scale.category20c()
-
+		var colorScale = d3.scale.category20c();
+		
 		var paths = this.createPaths();
 
 		function drawTrapezoids(funnel, i){
 			var trapezoid = funnelSvg
 			.append('svg:path')
 			.attr("d", function(d){
-				return funnelPath(paths[i])
+				return funnelPath(paths[i]);
 			})
 			.attr("fill", function(d){
-				return colorScale(i)
+				return colorScale(i);
 			});
 
 			nextHeight = paths[i][[paths[i].length]-1];
@@ -102,10 +102,10 @@
 			.append('text')
 			.text(funnel.getLabel(i) + ': ' + funnel.getEngagementCount(i))
 			.attr("x", function(d){
-				return funnel.width/2
+				return funnel.width/2;
 			})
 			.attr("y", function(d){
-				return (paths[i][0][1] + paths[i][1][1])/2
+				return (paths[i][0][1] + paths[i][1][1])/2;
 			}) // Average height of bases
 			.attr("text-anchor", "middle")
 			.attr("class", "funnel-label")
@@ -113,12 +113,12 @@
 			.attr("fill", "#fff");
 
 			if(i < paths.length - 1){
-				drawTrapezoids(funnel, i+1)
+				drawTrapezoids(funnel, i+1);
 			}
 		}
 
 		drawTrapezoids(this, 0);
-	}
+	};
 })();
 
 
