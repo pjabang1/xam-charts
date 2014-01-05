@@ -34,6 +34,7 @@
 		<script src="js/d3.v3.min.js" charset="utf-8"></script>
 		<script src="../src/chart/xam.js"></script>
 		<script src="../src/chart/donut.js"></script>
+		<script src="../src/chart/pie.js"></script>
 
 		<script type="text/javascript">
 			$(document).ready(function() {
@@ -41,8 +42,11 @@
 					data: [{label: 'hey', value: 50}, {label : 'black', value: 60}, {value: 50}, {value: 30}, {value: 65}]
 				};
 				
-				var donut = new xam.chart.donut(options);
-				donut.draw('#donut-container');
+			var donut = new xam.chart.donut(options);
+			donut.draw('#donut-container');
+				
+				//var pie = new xam.chart.pie(options);
+				//pie.draw('#donut-container');
 
 			});
 		</script>

@@ -13,7 +13,7 @@
 
 	xam.chart.donut = function(options) {
 		this.setOptions(options);
-		
+
 	};
 
 	xam.chart.donut.prototype.info = function() {
@@ -21,6 +21,7 @@
 	}
 	xam.chart.donut.prototype.setOptions = function(options) {
 
+		console.log(options);
 		this.properties = xam.getProperties(options);
 		this.options = options;
 		this.start = 0;
@@ -31,7 +32,7 @@
 
 		this.margin = 10;
 
-		this.innerRadius = 50;
+		this.innerRadius = 0;
 		this.outerRadius = Math.min(this.width, this.height) / 2;
 
 		if (typeof options.elem !== 'undefined') {
@@ -114,7 +115,10 @@
 				.attr("dy", ".35em")
 				.style("text-anchor", "middle")
 				.text(function(d, i) {
-					return d.value;
+					if (typeof d.label !== 'undefined') {
+						return d.label;
+					}
+					return '';
 				});
 
 		arcs.exit()
