@@ -1,164 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<meta name="description" content="">
-		<meta name="author" content="">
-		<title>Funnel</title>
-		<link href='http://fonts.googleapis.com/css?family=Droid+Sans' rel='stylesheet' type='text/css'>
-		<link href="css/bootstrap.css" rel="stylesheet">
-		<link href="css/app.css" rel="stylesheet">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <title>Bullet Axis</title>
+        <link href='http://fonts.googleapis.com/css?family=Droid+Sans' rel='stylesheet' type='text/css'>
+        <link href="css/bootstrap.css" rel="stylesheet">
+        <link href="css/app.css" rel="stylesheet">
 
 
-		<style>
+        <style>
 
-			body {
-				font: 10px sans-serif;
-			}
-			.chart-container {
-				width : 400px;
-				height : 400px;
-				border : 1px solid #ccc;
-			}
+            body {
+                font: 10px sans-serif;
+            }
 
-			.axis path,.axis line {fill: none;stroke:#b6b6b6;shape-rendering: crispEdges;}
-			/*.tick line{fill:none;stroke:none;}*/
-			.tick text{fill:#999;}
-			g.journal.active{cursor:pointer;}
-			text.label{font-size:12px;font-weight:bold;cursor:pointer;}
-			text.value{font-size:12px;font-weight:bold;}
+            .axis path,.axis line {fill: none;stroke:#b6b6b6;shape-rendering: crispEdges;}
+            /*.tick line{fill:none;stroke:none;}*/
+            .tick text{fill:#999;}
+            g.journal.active{cursor:pointer;}
+            text.label{font-size:12px;font-weight:bold;cursor:pointer;}
+            text.value{font-size:12px;font-weight:bold;}
 
-		</style>
-	</head>
-	<body>
-		<div id="bullet-axis-container" class="chart-container"></div>
+        </style>
+    </head>
+    <body>
+        <div id="bullet-axis-container" class="chart-container"></div>
 
 
-		<script src="js/jquery-1.10.2.min.js"></script>
-		<script src="js/d3.v3.min.js" charset="utf-8"></script>
+        <script src="js/jquery-1.10.2.min.js"></script>
+        <script src="js/d3.v3.min.js" charset="utf-8"></script>
+        <script src="../src/chart/xam.js"></script>
+        <script src="../src/chart/bubbleAxis.js"></script>
 
-		<script type="text/javascript">
-			function truncate(str, maxLength, suffix) {
-				if (str.length > maxLength) {
-					str = str.substring(0, maxLength + 1);
-					str = str.substring(0, Math.min(str.length, str.lastIndexOf(" ")));
-					str = str + suffix;
-				}
-				return str;
-			}
+        <script type="text/javascript">
+            $(document).ready(function() {
+            var data = [{"location":"ABERDEEN","latitude":"54.8824895084666","longitude":"-1.60127558720917","name":"ABERDEEN","data":[["201212",1408],["201301",1862],["201302",1778],["201303",1869],["201304",2039],["201305",1752],["201306",2100],["201307",1969],["201308",1833],["201309",1704],["201310",1667],["201311",1447]],"total":21428},{"location":"BELFAST","latitude":"54.5963802463868","longitude":"-5.93285365039531","name":"BELFAST","data":[["201212",984],["201301",1244],["201302",966],["201303",1028],["201304",1175],["201305",1194],["201306",1291],["201307",1269],["201308",1259],["201309",1125],["201310",1172],["201311",613]],"total":13320},{"location":"BATH","latitude":"51.3758463950567","longitude":"-2.35989160538217","name":"BATH","data":[["201212",238],["201301",426],["201302",452],["201303",421],["201304",387],["201305",490],["201306",336],["201307",451],["201308",456],["201309",481],["201310",589],["201311",431]],"total":5158},{"location":"BOLTON, LANCASHIRE","latitude":"53.5844373837164","longitude":"-2.42861686869071","name":"BOLTON, LANCASHIRE","data":[["201212",543],["201301",502],["201302",576],["201303",728],["201304",624],["201305",589],["201306",813],["201307",742],["201308",770],["201309",622],["201310",685],["201311",342]],"total":7536},{"location":"BOURNEMOUTH","latitude":"50.7189798949563","longitude":"-1.88459908463665","name":"BOURNEMOUTH","data":[["201212",428],["201301",376],["201302",344],["201303",456],["201304",558],["201305",389],["201306",553],["201307",464],["201308",554],["201309",506],["201310",529],["201311",331]],"total":5488},{"location":"CARDIFF","latitude":"51.4818530457303","longitude":"-3.17953854128768","name":"CARDIFF","data":[["201212",839],["201301",917],["201302",785],["201303",797],["201304",908],["201305",791],["201306",813],["201307",999],["201308",792],["201309",866],["201310",964],["201311",631]],"total":10102},{"location":"BLACKPOOL, LANCASHIRE","latitude":"53.8211591949969","longitude":"-3.05486124875708","name":"BLACKPOOL, LANCASHIRE","data":[["201212",483],["201301",706],["201302",443],["201303",666],["201304",723],["201305",605],["201306",660],["201307",706],["201308",789],["201309",484],["201310",573],["201311",348]],"total":7186},{"location":"BIRMINGHAM","latitude":"52.486263637275","longitude":"-1.89039328571487","name":"BIRMINGHAM","data":[["201212",621],["201301",858],["201302",694],["201303",805],["201304",735],["201305",773],["201306",663],["201307",772],["201308",1101],["201309",750],["201310",755],["201311",657]],"total":9184},{"location":"BRISTOL","latitude":"51.45455432221","longitude":"-2.58788917574293","name":"BRISTOL","data":[["201212",564],["201301",974],["201302",723],["201303",694],["201304",729],["201305",632],["201306",720],["201307",766],["201308",646],["201309",602],["201310",766],["201311",443]],"total":8259},{"location":"CARLISLE","latitude":"54.892264942304","longitude":"-2.93190370010021","name":"CARLISLE","data":[["201212",460],["201301",636],["201302",572],["201303",746],["201304",719],["201305",617],["201306",746],["201307",738],["201308",784],["201309",821],["201310",726],["201311",328]],"total":7893},{"location":"EXETER","latitude":"50.7184667969972","longitude":"-3.53385057152319","name":"EXETER","data":[["201212",355],["201301",560],["201302",510],["201303",545],["201304",529],["201305",562],["201306",535],["201307",486],["201308",387],["201309",393],["201310",556],["201311",369]],"total":5787},{"location":"COLCHESTER","latitude":"51.8914550168615","longitude":".889983226866366","name":"COLCHESTER","data":[["201212",541],["201301",738],["201302",852],["201303",546],["201304",615],["201305",647],["201306",605],["201307",744],["201308",813],["201309",660],["201310",520],["201311",437]],"total":7718},{"location":"DERBY","latitude":"53.1050722549593","longitude":"-1.64253899134899","name":"DERBY","data":[["201212",538],["201301",689],["201302",680],["201303",860],["201304",727],["201305",678],["201306",762],["201307",735],["201308",606],["201309",620],["201310",791],["201311",340]],"total":8026},{"location":"CAMBRIDGE, CAMBRIDGESHIRE","latitude":"52.2047772753985","longitude":".13810254922516","name":"CAMBRIDGE, CAMBRIDGESHIRE","data":[["201212",575],["201301",625],["201302",648],["201303",660],["201304",691],["201305",680],["201306",744],["201307",836],["201308",728],["201309",768],["201310",688],["201311",508]],"total":8151},{"location":"CHESTER","latitude":"55.3888079260277","longitude":"-2.59858331590212","name":"CHESTER","data":[["201212",383],["201301",781],["201302",603],["201303",692],["201304",731],["201305",730],["201306",609],["201307",745],["201308",627],["201309",645],["201310",547],["201311",334]],"total":7427},{"location":"IPSWICH","latitude":"52.0561223122207","longitude":"1.1496438483711","name":"IPSWICH","data":[["201212",731],["201301",737],["201302",603],["201303",687],["201304",828],["201305",757],["201306",826],["201307",881],["201308",711],["201309",845],["201310",546],["201311",448]],"total":8600},{"location":"DUNDEE","latitude":"56.4644304528616","longitude":"-2.96910280573648","name":"DUNDEE","data":[["201212",641],["201301",773],["201302",689],["201303",810],["201304",757],["201305",1085],["201306",704],["201307",646],["201308",790],["201309",668],["201310",705],["201311",365]],"total":8633},{"location":"EDINBURGH","latitude":"55.9531959914524","longitude":"-3.18825233055427","name":"EDINBURGH","data":[["201212",895],["201301",1144],["201302",1227],["201303",1134],["201304",1092],["201305",1524],["201306",1314],["201307",1099],["201308",1172],["201309",1594],["201310",1259],["201311",940]],"total":14394},{"location":"COVENTRY","latitude":"52.4067253943971","longitude":"-1.52052391180611","name":"COVENTRY","data":[["201212",742],["201301",1096],["201302",876],["201303",895],["201304",982],["201305",909],["201306",913],["201307",1144],["201308",951],["201309",894],["201310",968],["201311",562]],"total":10932},{"location":"LEEDS, WEST YORKSHIRE","latitude":"53.8012766362594","longitude":"-1.54858717634904","name":"LEEDS, WEST YORKSHIRE","data":[["201212",558],["201301",679],["201302",660],["201303",649],["201304",680],["201305",739],["201306",551],["201307",721],["201308",542],["201309",629],["201310",591],["201311",350]],"total":7349},{"location":"DONCASTER","latitude":"53.5226017341827","longitude":"-1.12858349480825","name":"DONCASTER","data":[["201212",420],["201301",649],["201302",518],["201303",488],["201304",571],["201305",511],["201306",664],["201307",564],["201308",586],["201309",641],["201310",504],["201311",333]],"total":6449},{"location":"INVERNESS","latitude":"57.4783650594991","longitude":"-4.22280263985188","name":"INVERNESS","data":[["201212",433],["201301",585],["201302",422],["201303",521],["201304",488],["201305",568],["201306",580],["201307",747],["201308",654],["201309",624],["201310",545],["201311",331]],"total":6498},{"location":"HULL","latitude":"53.7468492344164","longitude":"-.332607409962294","name":"HULL","data":[["201212",403],["201301",572],["201302",576],["201303",748],["201304",617],["201305",603],["201306",589],["201307",659],["201308",597],["201309",454],["201310",529],["201311",350]],"total":6697},{"location":"GLASGOW","latitude":"55.8641811335553","longitude":"-4.25177912138992","name":"GLASGOW","data":[["201212",1011],["201301",1156],["201302",1199],["201303",1247],["201304",1315],["201305",1320],["201306",1117],["201307",1184],["201308",897],["201309",1010],["201310",774],["201311",697]],"total":12927},{"location":"LEICESTER","latitude":"51.3945957965555","longitude":"-.736352507654627","name":"LEICESTER","data":[["201212",750],["201301",1104],["201302",805],["201303",985],["201304",959],["201305",769],["201306",821],["201307",867],["201308",1007],["201309",748],["201310",775],["201311",516]],"total":10106},{"location":"LINCOLN","latitude":"52.0656478234293","longitude":"-.771959936273981","name":"LINCOLN","data":[["201212",546],["201301",851],["201302",796],["201303",770],["201304",768],["201305",716],["201306",849],["201307",855],["201308",703],["201309",719],["201310",542],["201311",516]],"total":8631},{"location":"NEWCASTLE UPON TYNE","latitude":"54.9782199791088","longitude":"-1.61779571375042","name":"NEWCASTLE UPON TYNE","data":[["201212",981],["201301",1263],["201302",870],["201303",1155],["201304",1417],["201305",1192],["201306",994],["201307",1119],["201308",1050],["201309",1354],["201310",1134],["201311",726]],"total":13255},{"location":"LEAMINGTON SPA","latitude":"52.2876179933038","longitude":"-1.53282002012655","name":"LEAMINGTON SPA","data":[["201212",390],["201301",626],["201302",653],["201303",615],["201304",648],["201305",604],["201306",595],["201307",553],["201308",501],["201309",508],["201310",554],["201311",381]],"total":6628},{"location":"SHEFFIELD","latitude":"53.3811354041259","longitude":"-1.47010176439882","name":"SHEFFIELD","data":[["201212",742],["201301",1015],["201302",981],["201303",819],["201304",1168],["201305",1055],["201306",968],["201307",1065],["201308",815],["201309",976],["201310",816],["201311",672]],"total":11092},{"location":"SOUTHEND-ON-SEA","latitude":"51.5413270049008","longitude":".711504553183646","name":"SOUTHEND-ON-SEA","data":[["201212",379],["201301",574],["201302",466],["201303",511],["201304",615],["201305",640],["201306",542],["201307",513],["201308",560],["201309",522],["201310",521],["201311",382]],"total":6225},{"location":"NEWPORT, GWENT","latitude":"51.5847022926513","longitude":"-2.99828868991975","name":"NEWPORT, GWENT","data":[["201212",494],["201301",923],["201302",706],["201303",841],["201304",1066],["201305",1031],["201306",976],["201307",1081],["201308",989],["201309",989],["201310",902],["201311",662]],"total":10660},{"location":"LIVERPOOL","latitude":"53.4115423706426","longitude":"-2.99009946247037","name":"LIVERPOOL","data":[["201212",782],["201301",818],["201302",846],["201303",1099],["201304",1150],["201305",925],["201306",746],["201307",874],["201308",951],["201309",939],["201310",1050],["201311",617]],"total":10797},{"location":"PLYMOUTH","latitude":"50.3710166096058","longitude":"-4.13529281210184","name":"PLYMOUTH","data":[["201212",724],["201301",1033],["201302",854],["201303",1026],["201304",978],["201305",930],["201306",733],["201307",640],["201308",900],["201309",691],["201310",1002],["201311",413]],"total":9924},{"location":"NORWICH","latitude":"52.6309122772928","longitude":"1.29728953534332","name":"NORWICH","data":[["201212",697],["201301",1060],["201302",948],["201303",1241],["201304",1043],["201305",1074],["201306",1373],["201307",1305],["201308",1280],["201309",1006],["201310",1184],["201311",646]],"total":12857},{"location":"OXFORD","latitude":"51.7517606476881","longitude":"-1.2552892188001","name":"OXFORD","data":[["201212",373],["201301",534],["201302",626],["201303",578],["201304",694],["201305",730],["201306",661],["201307",590],["201308",675],["201309",608],["201310",591],["201311",499]],"total":7159},{"location":"NORTHAMPTON","latitude":"52.2405056766924","longitude":"-.902668695526383","name":"NORTHAMPTON","data":[["201212",539],["201301",722],["201302",689],["201303",717],["201304",737],["201305",688],["201306",855],["201307",595],["201308",817],["201309",612],["201310",597],["201311",337]],"total":7905},{"location":"NOTTINGHAM","latitude":"52.954784499662","longitude":"-1.15810826429837","name":"NOTTINGHAM","data":[["201212",703],["201301",1094],["201302",949],["201303",781],["201304",883],["201305",818],["201306",643],["201307",926],["201308",814],["201309",822],["201310",764],["201311",580]],"total":9777},{"location":"PERTH","latitude":"51.7544617652103","longitude":"-2.2860126524989","name":"PERTH","data":[["201212",418],["201301",515],["201302",514],["201303",459],["201304",504],["201305",464],["201306",495],["201307",596],["201308",590],["201309",618],["201310",416],["201311",332]],"total":5921},{"location":"PORTSMOUTH","latitude":"50.7926438154417","longitude":"-1.09547937352186","name":"PORTSMOUTH","data":[["201212",352],["201301",478],["201302",393],["201303",377],["201304",508],["201305",411],["201306",474],["201307",353],["201308",397],["201309",464],["201310",472],["201311",327]],"total":5006},{"location":"PRESTON, LANCASHIRE","latitude":"53.7631933141585","longitude":"-2.70307681392412","name":"PRESTON, LANCASHIRE","data":[["201212",799],["201301",678],["201302",805],["201303",871],["201304",802],["201305",741],["201306",700],["201307",757],["201308",658],["201309",617],["201310",674],["201311",443]],"total":8545},{"location":"SUNDERLAND, TYNE AND WEAR","latitude":"54.9068427296651","longitude":"-1.38382516837992","name":"SUNDERLAND, TYNE AND WEAR","data":[["201212",660],["201301",852],["201302",986],["201303",732],["201304",847],["201305",827],["201306",575],["201307",879],["201308",866],["201309",789],["201310",713],["201311",410]],"total":9136},{"location":"SWANSEA","latitude":"51.6217314496334","longitude":"-3.94700563716568","name":"SWANSEA","data":[["201212",679],["201301",1015],["201302",675],["201303",932],["201304",841],["201305",774],["201306",750],["201307",925],["201308",914],["201309",870],["201310",708],["201311",418]],"total":9501},{"location":"SHREWSBURY","latitude":"52.7069507462965","longitude":"-2.75270996082944","name":"SHREWSBURY","data":[["201212",441],["201301",642],["201302",430],["201303",595],["201304",465],["201305",536],["201306",718],["201307",462],["201308",530],["201309",432],["201310",547],["201311",322]],"total":6120},{"location":"SOUTHAMPTON","latitude":"50.9098152394099","longitude":"-1.40442040462354","name":"SOUTHAMPTON","data":[["201212",334],["201301",592],["201302",612],["201303",519],["201304",567],["201305",759],["201306",623],["201307",590],["201308",680],["201309",823],["201310",881],["201311",437]],"total":7417},{"location":"WORCESTER","latitude":"52.1936643477524","longitude":"-2.22155968664999","name":"WORCESTER","data":[["201212",425],["201301",555],["201302",485],["201303",526],["201304",533],["201305",639],["201306",734],["201307",680],["201308",584],["201309",589],["201310",768],["201311",408]],"total":6926},{"location":"ST HELENS, MERSEYSIDE","latitude":null,"longitude":null,"name":"ST HELENS, MERSEYSIDE","data":[["201212",560],["201301",604],["201302",613],["201303",516],["201304",677],["201305",534],["201306",646],["201307",624],["201308",556],["201309",639],["201310",630],["201311",337]],"total":6936},{"location":"WREXHAM","latitude":null,"longitude":null,"name":"WREXHAM","data":[["201212",390],["201301",549],["201302",429],["201303",549],["201304",686],["201305",616],["201306",552],["201307",739],["201308",754],["201309",404],["201310",474],["201311",363]],"total":6505},{"location":"STOKE-ON-TRENT","latitude":null,"longitude":null,"name":"STOKE-ON-TRENT","data":[["201212",625],["201301",726],["201302",829],["201303",697],["201304",800],["201305",525],["201306",650],["201307",794],["201308",701],["201309",776],["201310",712],["201311",444]],"total":8279},{"location":"YORK","latitude":null,"longitude":null,"name":"YORK","data":[["201212",733],["201301",1320],["201302",1135],["201303",911],["201304",1050],["201305",951],["201306",896],["201307",919],["201308",1178],["201309",1010],["201310",1043],["201311",739]],"total":11885},{"location":"UNITED KINGDOM","latitude":null,"longitude":null,"name":"UNITED KINGDOM","data":[["201212",461],["201301",732],["201302",620],["201303",560],["201304",715],["201305",710],["201306",717],["201307",717],["201308",581],["201309",1070],["201310",701],["201311",322]],"total":7906}];
 
-			var margin = {top: 20, right: 200, bottom: 0, left: 20},
-			width = 300,
-					height = 650;
-
-			var start_year = 2004,
-					end_year = 2013;
-
-			var c = d3.scale.category20c();
-
-			var x = d3.scale.linear()
-					.range([0, width]);
-
-			var xAxis = d3.svg.axis()
-					.scale(x)
-					.orient("top");
-
-			var formatYears = d3.format("0000");
-			xAxis.tickFormat(formatYears);
-
-			var svg = d3.select("#bullet-axis-container").append("svg")
-					.attr("width", width + margin.left + margin.right)
-					.attr("height", height + margin.top + margin.bottom)
-					.style("margin-left", margin.left + "px")
-					.append("g")
-					.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-//var dataset = [[ [2002, 8], [2003, 1], [2004, 1], [2005, 1], [2006, 3], [2007, 3], [2009, 3], [2013, 3]], [ [2004, 5], [2005, 1], [2006, 2], [2010, 20], [2011, 3] ] ,[ [2001, 5], [2005, 15], [2006, 2], [2010, 20], [2012, 25] ]];
-// var dataset = [ [2001, 5], [2005, 15], [2006, 2], [2010, 20], [2012, 25] ];
-
-			var data = [{"articles": [[2010, 6], [2011, 10], [2012, 11], [2013, 23], [2006, 1]], "total": 51, "name": "The Journal of neuroscience : the official journal of the Society for Neuroscience"}, {"articles": [[2008, 1], [2010, 3], [2011, 4], [2012, 17], [2013, 10]], "total": 35, "name": "Nature neuroscience"}, {"articles": [[2009, 1], [2010, 2], [2011, 8], [2012, 13], [2013, 11]], "total": 35, "name": "PloS one"}, {"articles": [[2007, 1], [2009, 3], [2010, 5], [2011, 7], [2012, 9], [2013, 9]], "total": 34, "name": "Nature"}, {"articles": [[2009, 2], [2010, 3], [2011, 4], [2012, 8], [2013, 9]], "total": 26, "name": "Neuron"}, {"articles": [[2009, 2], [2010, 2], [2011, 3], [2012, 9], [2013, 7]], "total": 23, "name": "Proceedings of the National Academy of Sciences of the United States of America"}, {"articles": [[2008, 1], [2010, 5], [2011, 10], [2012, 3], [2013, 3]], "total": 22, "name": "Nature methods"}, {"articles": [[2007, 1], [2009, 1], [2010, 3], [2011, 4], [2012, 4], [2013, 8]], "total": 21, "name": "Current opinion in neurobiology"}, {"articles": [[2006, 1], [2009, 3], [2010, 4], [2011, 1], [2012, 2], [2013, 7]], "total": 18, "name": "Science (New York, N.Y.)"}, {"articles": [[2010, 2], [2011, 4], [2012, 6], [2013, 4], [2007, 1]], "total": 17, "name": "Current biology : CB"}, {"articles": [[2010, 1], [2011, 3], [2012, 8], [2013, 3]], "total": 15, "name": "Journal of neurophysiology"}, {"articles": [[2009, 1], [2012, 4], [2013, 9]], "total": 14, "name": "Frontiers in neural circuits"}, {"articles": [[2012, 1], [2013, 13]], "total": 14, "name": "Brain research"}, {"articles": [[2009, 2], [2010, 1], [2011, 2], [2013, 8]], "total": 13, "name": "Frontiers in molecular neuroscience"}, {"articles": [[2008, 1], [2010, 2], [2011, 3], [2012, 3], [2013, 4]], "total": 13, "name": "The Journal of biological chemistry"}, {"articles": [[2009, 1], [2010, 1], [2011, 8], [2012, 2]], "total": 12, "name": "Conference proceedings : ... Annual International Conference of the IEEE Engineering in Medicine and Biology Society. IEEE Engineering in Medicine and Biology Society. Conference"}, {"articles": [[2012, 12]], "total": 12, "name": "Progress in brain research"}, {"articles": [[2009, 1], [2010, 1], [2012, 4], [2013, 6]], "total": 12, "name": "Journal of neuroscience methods"}, {"articles": [[2011, 3], [2012, 5], [2013, 3]], "total": 11, "name": "Journal of visualized experiments : JoVE"}, {"articles": [[2011, 1], [2012, 2], [2013, 8]], "total": 11, "name": "Neuroscience research"}, {"articles": [[2008, 1], [2010, 2], [2011, 5], [2012, 2]], "total": 10, "name": "Cell"}, {"articles": [[2012, 10]], "total": 10, "name": "Biological psychiatry"}, {"articles": [[2009, 1], [2011, 1], [2012, 5], [2013, 1]], "total": 8, "name": "The Journal of physiology"}, {"articles": [[2010, 2], [2012, 4], [2013, 1]], "total": 7, "name": "Nature protocols"}, {"articles": [[2013, 7]], "total": 7, "name": "Behavioural brain research"}, {"articles": [[2011, 5], [2013, 1]], "total": 6, "name": "Experimental physiology"}, {"articles": [[2011, 1], [2012, 1], [2013, 4]], "total": 6, "name": "Neuropharmacology"}, {"articles": [[2011, 1], [2012, 2], [2013, 2]], "total": 5, "name": "Neuroscience"}, {"articles": [[2011, 2], [2013, 3]], "total": 5, "name": "Nature communications"}, {"articles": [[2009, 1], [2010, 1], [2011, 1], [2012, 1], [2013, 1]], "total": 5, "name": "Neurosurgery"}];
-			x.domain([start_year, end_year]);
-			var xScale = d3.scale.linear()
-					.domain([start_year, end_year])
-					.range([0, width]);
-
-			svg.append("g")
-					.attr("class", "x axis")
-					.attr("transform", "translate(0," + 0 + ")")
-					.call(xAxis);
-
-			for (var j = 0; j < data.length; j++) {
-				var g = svg.append("g").attr("class", "journal");
-
-				var circles = g.selectAll("circle")
-						.data(data[j]['articles'])
-						.enter()
-						.append("circle");
-
-				var text = g.selectAll("text")
-						.data(data[j]['articles'])
-						.enter()
-						.append("text");
-
-				var rScale = d3.scale.linear()
-						.domain([0, d3.max(data[j]['articles'], function(d) {
-								return d[1];
-							})])
-						.range([2, 9]);
-
-				circles
-						.attr("cx", function(d, i) {
-							return xScale(d[0]);
-						})
-						.attr("cy", j * 20 + 20)
-						.attr("r", function(d) {
-							return rScale(d[1]);
-						})
-						.style("fill", function(d) {
-							return c(j);
-						});
-
-				text
-						.attr("y", j * 20 + 25)
-						.attr("x", function(d, i) {
-							return xScale(d[0]) - 5;
-						})
-						.attr("class", "value")
-						.text(function(d) {
-							return d[1];
-						})
-						.style("fill", function(d) {
-							return c(j);
-						})
-						.style("display", "none");
-
-				g.append("text")
-						.attr("y", j * 20 + 25)
-						.attr("x", width + 20)
-						.attr("class", "label")
-						.text(truncate(data[j]['name'], 30, "..."))
-						.style("fill", function(d) {
-							return c(j);
-						})
-						.on("mouseover", mouseover)
-						.on("mouseout", mouseout);
-			}
-			;
-
-			function mouseover(p) {
-				var g = d3.select(this).node().parentNode;
-				d3.select(g).selectAll("circle").style("display", "none");
-				d3.select(g).selectAll("text.value").style("display", "block");
-			}
-
-			function mouseout(p) {
-				var g = d3.select(this).node().parentNode;
-				d3.select(g).selectAll("circle").style("display", "block");
-				d3.select(g).selectAll("text.value").style("display", "none");
-			}
-
-		</script>
-	</body>
+             var options = {
+                series: data,
+                margin: {top: 40, right: 200, bottom: 0, left: 25}
+            };
+            
+            var bubbleAxisChart = new xam.chart.bubbleAxis(options);
+            bubbleAxisChart.draw('#bullet-axis-container');
+            });
+        </script>
+    </body>
 </html>
