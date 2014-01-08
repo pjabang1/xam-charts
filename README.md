@@ -11,4 +11,5 @@ Xam Charts is prototype charting library. This is a learning project
 Add a script tag to include `xam.chart.js` OR `xam.chart.min.js` in your project.  
 Also add a link to the `xam.charts.css` file. 
 
-
+# Bubble Axis
+![Alt text](/screenshots/bubbleAxis.png "Bubble Axis")
