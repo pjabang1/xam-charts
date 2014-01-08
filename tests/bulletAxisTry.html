@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="description" content="">
+		<meta name="author" content="">
+		<title>Funnel</title>
+		<link href='http://fonts.googleapis.com/css?family=Droid+Sans' rel='stylesheet' type='text/css'>
+		<link href="css/bootstrap.css" rel="stylesheet">
+		<link href="css/app.css" rel="stylesheet">
+
+
+		<style>
+
+			body {
+				font: 10px sans-serif;
+			}
+			.chart-container {
+				width : 1000px;
+				height : 800px;
+				border : 1px solid #ccc;
+			}
+
+			.axis path,.axis line {fill: none;stroke:#b6b6b6;shape-rendering: crispEdges;}
+			/*.tick line{fill:none;stroke:none;}*/
+			.tick text{fill:#999;}
+			g.journal.active{cursor:pointer;}
+			text.label{font-size:12px;font-weight:bold;cursor:pointer;}
+			text.value{font-size:12px;font-weight:bold;}
+
+		</style>
+	</head>
+	<body>
+		<div id="bullet-axis-container" class="chart-container"></div>
+
+
+		<script src="js/jquery-1.10.2.min.js"></script>
+		<script src="js/d3.v3.min.js" charset="utf-8"></script>
+
+		<script type="text/javascript">
+			function truncate(str, maxLength, suffix) {
+				if (str.length > maxLength) {
+					str = str.substring(0, maxLength + 1);
+					str = str.substring(0, Math.min(str.length, str.lastIndexOf(" ")));
+					str = str + suffix;
+				}
+				return str;
+			}
+
+			var margin = {top: 20, right: 200, bottom: 0, left: 20},
+			width = 800,
+					height = 650;
+
+			var start_year = 2004,
+					end_year = 2013;
+
+			var c = d3.scale.category20c();
+
+			var data = [{"name": "WARRINGTON, CHESHIRE", "data": [["Dec 12", "171"], ["Jan 13", "453"], ["Feb 13", "365"], ["Mar 13", "301"], ["Apr 13", "312"], ["May 13", "428"], ["Jun 13", "364"], ["Jul 13", "359"], ["Aug 13", "300"], ["Sep 13", "357"], ["Oct 13", "415"], ["Nov 13", "301"]]}, {"name": "WEST LONDON", "data": [["Dec 12", "53"], ["Jan 13", "78"], ["Mar 13", "58"], ["May 13", "55"], ["Jun 13", "53"], ["Jul 13", "62"], ["Aug 13", "63"], ["Sep 13", "61"], ["Oct 13", "67"]]}, {"name": "CROYDON, SURREY", "data": [["Dec 12", "121"], ["Jan 13", "180"], ["Feb 13", "198"], ["Mar 13", "142"], ["Apr 13", "118"], ["May 13", "166"], ["Jun 13", "126"], ["Jul 13", "163"], ["Aug 13", "112"], ["Sep 13", "129"], ["Oct 13", "167"], ["Nov 13", "81"]]}, {"name": "MANCHESTER", "data": [["Dec 12", "608"], ["Jan 13", "616"], ["Feb 13", "512"], ["Mar 13", "661"], ["Apr 13", "539"], ["May 13", "695"], ["Jun 13", "533"], ["Jul 13", "691"], ["Aug 13", "759"], ["Sep 13", "632"], ["Oct 13", "717"], ["Nov 13", "419"]]}, {"name": "READING", "data": [["Dec 12", "5557"], ["Jan 13", "6412"], ["Feb 13", "6058"], ["Mar 13", "6680"], ["Apr 13", "6051"], ["May 13", "6280"], ["Jun 13", "6226"], ["Jul 13", "6367"], ["Aug 13", "1627"], ["Sep 13", "676"], ["Oct 13", "555"], ["Nov 13", "988"]]}, {"name": "ABERDEEN", "data": [["Dec 12", "763"], ["Jan 13", "1013"], ["Feb 13", "1039"], ["Mar 13", "910"], ["Apr 13", "809"], ["May 13", "604"], ["Jun 13", "693"], ["Jul 13", "627"], ["Aug 13", "687"], ["Sep 13", "683"], ["Oct 13", "833"], ["Nov 13", "646"]]}, {"name": "LONDON", "data": [["Dec 12", "768"], ["Jan 13", "880"], ["Feb 13", "834"], ["Mar 13", "914"], ["Apr 13", "880"], ["May 13", "634"], ["Jun 13", "1116"], ["Jul 13", "1142"], ["Aug 13", "926"], ["Sep 13", "810"], ["Oct 13", "927"], ["Nov 13", "721"]]}, {"name": "EDINBURGH", "data": [["Dec 12", "603"], ["Jan 13", "910"], ["Feb 13", "691"], ["Mar 13", "791"], ["Apr 13", "1009"], ["May 13", "804"], ["Jun 13", "839"], ["Jul 13", "951"], ["Aug 13", "860"], ["Sep 13", "838"], ["Oct 13", "915"], ["Nov 13", "575"]]}, {"name": "ANDOVER", "data": [["Dec 12", "130"], ["Jan 13", "229"], ["Feb 13", "164"], ["Mar 13", "105"], ["Apr 13", "98"], ["May 13", "172"], ["Jun 13", "158"], ["Jul 13", "235"], ["Aug 13", "153"], ["Sep 13", "134"], ["Oct 13", "231"], ["Nov 13", "107"]]}, {"name": "ROYSTON, HERTFORDSHIRE", "data": [["Dec 12", "130"], ["Jan 13", "116"], ["Feb 13", "82"], ["Mar 13", "59"], ["Apr 13", "161"], ["May 13", "128"], ["Jun 13", "107"], ["Jul 13", "115"], ["Aug 13", "145"], ["Sep 13", "120"], ["Oct 13", "129"], ["Nov 13", "116"]]}, {"name": "CAVERSHAM", "data": [["Feb 13", "51"], ["Sep 13", "56"]]}, {"name": "RG1", "data": [["Aug 13", "181"], ["Sep 13", "50"], ["Oct 13", "88"]]}];
+
+
+			//var x = d3.scale.linear()
+			//.range([0, width]);
+
+			var format = d3.time.format("%b %y");
+
+			var minMonth = "Dec 12";
+			var maxMonth = "Dec 13";
+
+			var t1 = new Date(2012, 0, 1),
+					t2 = new Date(2013, 0, 1),
+					t0 = d3.time.month.offset(t1, -1),
+					t3 = d3.time.month.offset(t2, +1);
+
+			/**var x = d3.time.scale()
+			 .domain([t0, t3])
+			 .range([t0, t3].map(d3.time.scale()
+			 .domain([t1, t2])
+			 .range([0, width])));**/
+
+			var x = d3.time.scale()
+					.domain([format.parse(minMonth), format.parse(maxMonth)])
+					.range([0, width]);
+
+			var xAxis = d3.svg.axis()
+					.scale(x)
+					.orient("top")
+					.ticks(d3.time.months, 1)
+					.tickFormat(d3.time.format("%b %y"));
+			//var formatYears = d3.format("");
+			//xAxis.tickFormat(formatYears);
+
+			var svg = d3.select("#bullet-axis-container").append("svg")
+					.attr("width", width + margin.left + margin.right)
+					.attr("height", height + margin.top + margin.bottom)
+					.style("margin-left", margin.left + "px")
+					.append("g")
+					.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+// var dataset = [[ [2002, 8], [2003, 1], [2004, 1], [2005, 1], [2006, 3], [2007, 3], [2009, 3], [2013, 3]], [ [2004, 5], [2005, 1], [2006, 2], [2010, 20], [2011, 3] ] ,[ [2001, 5], [2005, 15], [2006, 2], [2010, 20], [2012, 25] ]];
+// var dataset = [ [2001, 5], [2005, 15], [2006, 2], [2010, 20], [2012, 25] ];
+
+			//var data = [{"articles": [[2010, 6], [2011, 10], [2012, 11], [2013, 23], [2006, 1]], "total": 51, "name": "The Journal of neuroscience : the official journal of the Society for Neuroscience"}, {"articles": [[2008, 1], [2010, 3], [2011, 4], [2012, 17], [2013, 10]], "total": 35, "name": "Nature neuroscience"}, {"articles": [[2009, 1], [2010, 2], [2011, 8], [2012, 13], [2013, 11]], "total": 35, "name": "PloS one"}, {"articles": [[2007, 1], [2009, 3], [2010, 5], [2011, 7], [2012, 9], [2013, 9]], "total": 34, "name": "Nature"}, {"articles": [[2009, 2], [2010, 3], [2011, 4], [2012, 8], [2013, 9]], "total": 26, "name": "Neuron"}, {"articles": [[2009, 2], [2010, 2], [2011, 3], [2012, 9], [2013, 7]], "total": 23, "name": "Proceedings of the National Academy of Sciences of the United States of America"}, {"articles": [[2008, 1], [2010, 5], [2011, 10], [2012, 3], [2013, 3]], "total": 22, "name": "Nature methods"}, {"articles": [[2007, 1], [2009, 1], [2010, 3], [2011, 4], [2012, 4], [2013, 8]], "total": 21, "name": "Current opinion in neurobiology"}, {"articles": [[2006, 1], [2009, 3], [2010, 4], [2011, 1], [2012, 2], [2013, 7]], "total": 18, "name": "Science (New York, N.Y.)"}, {"articles": [[2010, 2], [2011, 4], [2012, 6], [2013, 4], [2007, 1]], "total": 17, "name": "Current biology : CB"}, {"articles": [[2010, 1], [2011, 3], [2012, 8], [2013, 3]], "total": 15, "name": "Journal of neurophysiology"}, {"articles": [[2009, 1], [2012, 4], [2013, 9]], "total": 14, "name": "Frontiers in neural circuits"}, {"articles": [[2012, 1], [2013, 13]], "total": 14, "name": "Brain research"}, {"articles": [[2009, 2], [2010, 1], [2011, 2], [2013, 8]], "total": 13, "name": "Frontiers in molecular neuroscience"}, {"articles": [[2008, 1], [2010, 2], [2011, 3], [2012, 3], [2013, 4]], "total": 13, "name": "The Journal of biological chemistry"}, {"articles": [[2009, 1], [2010, 1], [2011, 8], [2012, 2]], "total": 12, "name": "Conference proceedings : ... Annual International Conference of the IEEE Engineering in Medicine and Biology Society. IEEE Engineering in Medicine and Biology Society. Conference"}, {"articles": [[2012, 12]], "total": 12, "name": "Progress in brain research"}, {"articles": [[2009, 1], [2010, 1], [2012, 4], [2013, 6]], "total": 12, "name": "Journal of neuroscience methods"}, {"articles": [[2011, 3], [2012, 5], [2013, 3]], "total": 11, "name": "Journal of visualized experiments : JoVE"}, {"articles": [[2011, 1], [2012, 2], [2013, 8]], "total": 11, "name": "Neuroscience research"}, {"articles": [[2008, 1], [2010, 2], [2011, 5], [2012, 2]], "total": 10, "name": "Cell"}, {"articles": [[2012, 10]], "total": 10, "name": "Biological psychiatry"}, {"articles": [[2009, 1], [2011, 1], [2012, 5], [2013, 1]], "total": 8, "name": "The Journal of physiology"}, {"articles": [[2010, 2], [2012, 4], [2013, 1]], "total": 7, "name": "Nature protocols"}, {"articles": [[2013, 7]], "total": 7, "name": "Behavioural brain research"}, {"articles": [[2011, 5], [2013, 1]], "total": 6, "name": "Experimental physiology"}, {"articles": [[2011, 1], [2012, 1], [2013, 4]], "total": 6, "name": "Neuropharmacology"}, {"articles": [[2011, 1], [2012, 2], [2013, 2]], "total": 5, "name": "Neuroscience"}, {"articles": [[2011, 2], [2013, 3]], "total": 5, "name": "Nature communications"}, {"articles": [[2009, 1], [2010, 1], [2011, 1], [2012, 1], [2013, 1]], "total": 5, "name": "Neurosurgery"}];
+
+			//x.domain([start_year, end_year]);
+			var xScale = d3.scale.linear()
+					.domain([start_year, end_year])
+					.range([0, width]);
+
+			var xScale = d3.time.scale()
+					.domain([format.parse(minMonth), format.parse(maxMonth)])
+					.range([0, width]);
+
+
+
+			svg.append("g")
+					.attr("class", "x axis")
+					.attr("transform", "translate(0," + 0 + ")")
+					.call(xAxis);
+
+			var values = data.map(function(d) {
+				return d.data;
+			})
+					.reduce(function(a, b) {
+						console.log(a);
+				console.log(b);
+						return a.concat(b);
+					});
+
+			for (var j = 0; j < data.length; j++) {
+				var g = svg.append("g").attr("class", "journal");
+
+				var circles = g.selectAll("circle")
+						.data(data[j]['data'])
+						.enter()
+						.append("circle");
+
+
+				var text = g.selectAll("text")
+						.data(data[j]['data'])
+						.enter()
+						.append("text");
+
+				console.log(d3.max(data[j]['data'], function(d) {
+					return d[1];
+				}));
+
+				var rScale = d3.scale.linear()
+						.domain([0, d3.max(data[j]['data'], function(d) {
+								return parseInt(d[1]);
+							})])
+						.range([2, 9]);
+
+				circles
+						.attr("cx", function(d, i) {
+							return xScale(format.parse(d[0]));
+						})
+						.attr("cy", j * 20 + 20)
+						.attr("r", function(d) {
+							return rScale(d[1]);
+						})
+						.attr("text", function(d) {
+							return d[1];
+						})
+						.style("fill", function(d) {
+							return c(j);
+						});
+
+
+				text
+						.attr("y", j * 20 + 25)
+						.attr("x", function(d, i) {
+							return xScale(format.parse(d[0])) - 5;
+						})
+						.attr("class", "value")
+						.text(function(d) {
+							return d[1];
+						})
+						.style("fill", function(d) {
+							return c(j);
+						})
+						.style("display", "none");
+
+				g.append("text")
+						.attr("y", j * 20 + 25)
+						.attr("x", width + 20)
+						.attr("class", "label")
+						.text(truncate(data[j]['name'], 20, "..."))
+						.style("fill", function(d) {
+							return c(j);
+						})
+						.on("mouseover", mouseover)
+						.on("mouseout", mouseout);
+			}
+			;
+
+
+			function mouseover(p) {
+				var g = d3.select(this).node().parentNode;
+				d3.select(g).selectAll("circle").style("display", "none");
+				d3.select(g).selectAll("text.value").style("display", "block");
+			}
+
+			function mouseout(p) {
+				var g = d3.select(this).node().parentNode;
+				d3.select(g).selectAll("circle").style("display", "block");
+				d3.select(g).selectAll("text.value").style("display", "none");
+			}
+
+		</script>
+	</body>
+</html>
