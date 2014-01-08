@@ -29,3 +29,7 @@ Also add a link to the `xam.charts.css` file.
 # Pie
 
 # Donut
+
+# Bar
+
+# Dual
